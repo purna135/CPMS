@@ -1,0 +1,61 @@
+{% include 'common/top.html' %}
+
+    <!--Breadcrumb Start-->
+    <section id="breadcrumb">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+          <li class="active">Show Project</li>
+        </ol>
+      </div>
+    </section>
+    <!--Breadcrumb End-->
+
+    <section id="main">
+      <div class="container">
+        <div class="row">
+
+            {% include 'common/left.html' %}
+
+          <div class="col-md-9">
+            <!-- Gallery -->
+            <div class="panel panel-default">
+              <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">Projects Details</h3>
+              </div>
+              <div class="panel-body">
+                  {% if project %}
+                    {% for foo in project %}
+                        <a href="{{ foo.project_id }}">
+                            <div class="col-md-3">
+                                <div class="well dash-box">
+                                    <h2>{{ foo.project_id }}</h2>
+                                    <h4>{{ foo.project_name }}</h4>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                   {% else %}
+                      <p>No Projects Available...</p>
+                  {% endif %}
+              </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% if messages %}
+        <script>
+            function myFunction() {
+                {% for message in messages %}
+                      alert("{{ message }}");
+                {% endfor %}
+            }
+            myFunction()
+        </script>
+    {% endif %}
+
+
+{% include 'common/foot.html' %}

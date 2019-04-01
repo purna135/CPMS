@@ -1,0 +1,77 @@
+{% include 'common/top.html' %}
+
+
+    <!--Breadcrumb Start-->
+    <section id="breadcrumb">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+          <li class="active">Create Project</li>
+        </ol>
+      </div>
+    </section>
+    <!--Breadcrumb End-->
+
+    <section id="main">
+      <div class="container">
+        <div class="row">
+
+            {% include 'common/left.html' %}
+
+          <div class="col-md-9">
+            <!-- Gallery -->
+            <div class="panel panel-default">
+              <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">Create New Projects</h3>
+              </div>
+              <div class="panel-body">
+
+               <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                  <fieldset>
+                  <legend>Add Programmer</legend>
+
+                  <div>
+                    {{ form.management_form }}
+                    {% for field in form %}
+                     <div class="link-formset">
+                      {{ field.as_p }}
+                    </div>
+                    {% endfor %}
+
+                  </div>
+
+                </fieldset>
+            <button type="submit" class="form-control btn btn-primary">Submit</button>
+            </form>
+
+              </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% load static %}
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+
+     <script>
+         $('.link-formset').formset({
+        addText: 'Add Programmer',
+        deleteText: 'Remove Programmer'
+        });
+
+        {% if messages %}
+            function myFunction() {
+                {% for message in messages %}
+                      alert("{{ message }}");
+                {% endfor %}
+            }
+            myFunction();
+        {% endif %}
+
+    </script>
+
+{% include 'common/foot.html' %}

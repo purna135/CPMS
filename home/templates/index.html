@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+	<title>Welcome</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+</head>
+<body>
+	<header>
+		<div class="main">
+            <ul>
+                <li class="active"><a href="{% url 'indexview' %}">HOME</a></li>
+                <li><a href="#">ABOUT</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </div>
+
+		<div class="title">
+			<h1>WELCOME TO MY PROJECT</h1>
+		</div>
+
+		<div class="button">
+			<a class="btn" href="{% url 'login' %}">SIGN IN</a>
+			<a class="btn" href="{% url 'register' %}">REGISTER</a>
+		</div>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p id="messagebox"></p>
+            </div>
+        </div>
+	</header>
+
+
+    <script>
+        var modal = document.getElementById('myModal');
+        var span = document.getElementsByClassName("close")[0];
+        var ptag=document.getElementById('messagebox');
+        function myFunction(message) {
+            ptag.innerHTML=message;
+            window.setTimeout(function() {
+                window.location = "http://127.0.0.1:8000/"; },3000);
+            modal.style.display = "block";
+            }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        {% if register %}
+            alert("{{ register }}");
+            {#myFunction("{{ register }}");#}
+        {% endif %}
+
+        {% if activated %}
+            myFunction("{{ activated }}");
+        {% endif %}
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

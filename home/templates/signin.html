@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <meta name="viewport" content="width=device-width">
+  <title>Sign in page</title>
+</head>
+
+<body class="page-responsive min-width-0 session-authentication">
+
+  <div class="container clearfix width-full text-center" style="margin-top:5%;">
+      <img src="{% static 'images/logo.png' %}" style="width:100px;height:80px;">
+  </div>
+
+  <div class="auth-form px-3">
+    <div class="auth-form-header p-0">
+        <h1>Please Sign in</h1>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+      <div class="auth-form-body mt-3">
+
+        <label for="id_username">Username</label>
+        <input type="text" name="username" class="form-control input-block" tabindex="1" autocapitalize="off" autocorrect="off" autofocus="autofocus" />
+
+         <label for="id_password">Password <a class="label-link" href="{% url 'password_reset' %}">Forgot password?</a></label>
+         <input type="password" name="password" class="form-control input-block" tabindex="2" />
+
+          <input type="submit" value="Sign in" tabindex="3" class="btn btn-primary btn-block"  />
+        </div>
+      </form>
+
+      {% for message in messages %}
+           <ul style="color: red;"> {{ message }}</ul>
+      {% endfor %}
+      
+
+      <p class="create-account-callout mt-3">
+          New member? <a href="{% url 'register' %}">Create an account</a>.
+      </p>
+    </div>
+  </body>
+</html>
+
