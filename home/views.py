@@ -26,15 +26,14 @@ def signinview(request):
         password = request.POST['password']
         try:
             user = authenticate(username= username, password=password)
-            if user is not None:
-                if user.is_superuser:
-                    login(request, user)
-                    return HttpResponseRedirect(reverse('dashboard'))
-                else:
-                    login(request, user)
-                    return HttpResponseRedirect(reverse('prog_dash'))
-            else:
+            if user is None:
                 messages.error(request, 'Username and password did not matched')
+            elif user.is_superuser:
+                login(request, user)
+                return HttpResponseRedirect(reverse('dashboard'))
+            else:
+                login(request, user)
+                return HttpResponseRedirect(reverse('prog_dash'))
         except:
             pass
     return render(request, 'signin.html')

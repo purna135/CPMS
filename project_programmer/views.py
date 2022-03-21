@@ -59,35 +59,34 @@ def show(request, pid):
 
 
 def upload(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            pid = request.POST['pid']
-            file = request.FILES['file']
-
-            project = Project.objects.get(project_id=pid)
-            work = Work.objects.get(project_id__project_id=pid, programmer_id__username=request.user)
-            work.file = file
-            work.status = True
-            work.end_time=int(time.time())
-            project.complete_part = project.complete_part + 1
-            project.save()
-            work.save()
-
-        rec = Project.objects.filter(work__programmer_id=request.user, work__status=False)
-        context = {'project':rec}
-        return render(request, 'project_upload.html', context)
-    else:
+    if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
+    if request.method == 'POST':
+        pid = request.POST['pid']
+        file = request.FILES['file']
+
+        project = Project.objects.get(project_id=pid)
+        work = Work.objects.get(project_id__project_id=pid, programmer_id__username=request.user)
+        work.file = file
+        work.status = True
+        work.end_time=int(time.time())
+        project.complete_part = project.complete_part + 1
+        project.save()
+        work.save()
+
+    rec = Project.objects.filter(work__programmer_id=request.user, work__status=False)
+    context = {'project':rec}
+    return render(request, 'project_upload.html', context)
 
 
 def download(request, pid):
-        work = Work.objects.get(project_id__project_id=pid, programmer_id__username=request.user)
+    work = Work.objects.get(project_id__project_id=pid, programmer_id__username=request.user)
 
-        filename = work.file.name.split('/')[-1]
-        response = HttpResponse(work.file, content_type='text/plain')
-        response['Content-Disposition'] = 'attachment; filename=%s' % filename
-        
-        return response
+    filename = work.file.name.split('/')[-1]
+    response = HttpResponse(work.file, content_type='text/plain')
+    response['Content-Disposition'] = f'attachment; filename={filename}'
+
+    return response
 
 
 def send_mail(request):
