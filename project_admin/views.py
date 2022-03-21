@@ -66,16 +66,15 @@ def details(request, pid):
 
 
 def createview(request):
-    if request.user.is_authenticated and request.user.is_superuser:
-        if request.method == 'POST':
-            form = ProjectForm(request.POST)
-            if form.is_valid():
-                request.session['project'] = request.POST
-                return HttpResponseRedirect(reverse('addprog'))
-        form = ProjectForm()
-        return render(request, 'create.html', {'form':form})
-    else:
+    if not request.user.is_authenticated or not request.user.is_superuser:
         return HttpResponseRedirect(reverse('login'))
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            request.session['project'] = request.POST
+            return HttpResponseRedirect(reverse('addprog'))
+    form = ProjectForm()
+    return render(request, 'create.html', {'form':form})
 
 
 class ProgrammerFormView(View):
